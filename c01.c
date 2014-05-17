@@ -1,27 +1,37 @@
 #include <clutter/clutter.h>
 #include <stdlib.h>
 
+#define errlog g_error
+#define dbglog g_debug
+
+/*
+  Wrapper for clutter_init()
+  clutter_init()のラッパー関数
+
+  log result of clutter_init()
+  clutter_init()の結果を出力する。
+*/
 static ClutterInitError my_clutter_init( int argc, char *argv[] )
 {
   ClutterInitError ret = clutter_init( &argc, &argv );
   switch( ret ) {
   case CLUTTER_INIT_SUCCESS:
-    g_printerr( "Initialisation successful\n" );
+    dbglog( "Initialisation successful\n" );
     break;
   case CLUTTER_INIT_ERROR_UNKNOWN:
-    g_printerr( "Unknown error\n" );
+    errlog( "Unknown error\n" );
     break;
   case CLUTTER_INIT_ERROR_THREADS:
-    g_printerr( "Thread initialisation failed\n" );
+    errlog( "Thread initialisation failed\n" );
     break;
   case CLUTTER_INIT_ERROR_BACKEND:
-    g_printerr( "Backend initialisation failed\n" );
+    errlog( "Backend initialisation failed\n" );
     break;
   case CLUTTER_INIT_ERROR_INTERNAL:
-    g_printerr( "Internal error\n" );
+    errlog( "Internal error\n" );
     break;
   default:
-    g_printerr( "Other error\n" );
+    errlog( "Other error\n" );
     break;
   }
   return ret;
@@ -38,7 +48,7 @@ int main(int argc, char *argv[])
 
   ClutterActor *stage = clutter_stage_new();
   if( stage == NULL ) {
-    g_printerr( "clutter_stage_new() failed\n" );
+    errlog( "clutter_stage_new() failed\n" );
     return EXIT_FAILURE;
   }
 
